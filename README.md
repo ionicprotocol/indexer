@@ -58,16 +58,17 @@ npm run ponder
 
 ## 🏗 Project Structure
 
-indexer/
-├── src/
-│   ├── index.ts # Main indexer logic
-│   └── api/
-│       ├── index.ts # GraphQL setup
-│       └── server.ts # REST API endpoints
-├── abis/
-│   └── ExampleContractAbi.ts # Contract ABI definitions
-├── ponder.config.ts # Ponder configuration
-└── ponder.schema.ts # Database schema definitions
+The indexer directory has the following structure:
+
+* `src/`: This directory contains the main indexer logic.
+	+ `index.ts`: This file contains the main indexer logic.
+	+ `api/`: This directory contains the API setup.
+		- `index.ts`: This file contains the GraphQL setup.
+		- `server.ts`: This file contains the REST API endpoints.
+* `abis/`: This directory contains the contract ABI definitions.
+	+ `ExampleContractAbi.ts`: This file contains the contract ABI definitions.
+* `ponder.config.ts`: This file contains the Ponder configuration.
+* `ponder.schema.ts`: This file contains the database schema definitions.
 
 ## 🚀 API Endpoints
 

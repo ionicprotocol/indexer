@@ -7,5 +7,4 @@ export const rewardAccrued = onchainTable("reward_accrued", (p) => ({
   user: p.hex().notNull(),
   reward: p.bigint().notNull(),
   timestamp: p.integer().notNull(),
-  chain: p.text().notNull(),
 }));

@@ -5,11 +5,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.API_PORT || 3000;
 
 // Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL! || "https://uoagtjstsdrjypxlkuzr.supabase.co";
-const supabaseKey = process.env.SUPABASE_KEY! || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvYWd0anN0c2RyanlweGxrdXpyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNzkwMTYxNywiZXhwIjoyMDIzNDc3NjE3fQ.s-VlvrdGIjLAwI4-4ZMDcGmAh3zCVmSCjvP2vEW1K-w"
+const supabaseUrl = process.env.SUPABASE_URL! || "";
+const supabaseKey = process.env.SUPABASE_ANON_KEY! || ""
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 

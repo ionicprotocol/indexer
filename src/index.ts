@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Supabase Client Initialization
 const supabase = createClient(
   process.env.SUPABASE_URL || "",
-  process.env.SUPABASE_KEY || ""
+  process.env.SUPABASE_ANON_KEY || ""
 );
 
 // Utility to sanitize BigInt fields

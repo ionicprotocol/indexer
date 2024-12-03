@@ -1,5 +1,5 @@
-# Use the official Node.js image as a parent image
-FROM node:18
+# Use a more compatible image for cross-platform support
+FROM node:18-bullseye-slim
 
 # Set the working directory
 WORKDIR /app
@@ -14,7 +14,10 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
+
+
+# Expose ports
 EXPOSE 3000
 
 # Run the application
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "ponder"]

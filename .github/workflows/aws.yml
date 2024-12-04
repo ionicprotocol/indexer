@@ -2,7 +2,7 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feat/indexer" ]
 
 env:
   AWS_REGION: us-east-1
@@ -51,9 +51,11 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264122535.dkr.ecr.us-east-1.amazonaws.com
-        docker build -t ponder/indexer .
-        docker tag ponder/indexer:latest 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
-        docker push 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
+        docker buildx build \
+          --platform linux/amd64 \
+          --push \
+          -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
+          .
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def

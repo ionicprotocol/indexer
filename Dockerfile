@@ -1,10 +1,8 @@
-# Use a more compatible image for cross-platform support
-FROM node:18-bullseye-slim
+FROM node:18.17.1
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
 # Install dependencies
@@ -13,11 +11,14 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
-
-
 # Expose ports
-EXPOSE 3000
+EXPOSE 3000 3001 42069
 
-# Run the application
-CMD ["npm", "run", "ponder"]
+# Run the application with necessary flags
+CMD ["node", \
+     "--experimental-fetch", \
+     "--loader", "ts-node/esm", \
+     "--no-warnings", \
+     "node_modules/.bin/ponder", \
+     "dev"]
+

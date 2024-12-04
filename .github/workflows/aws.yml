@@ -50,11 +50,20 @@ jobs:
       run: |
         # Build a docker container and push it to ECR
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264122535.dkr.ecr.us-east-1.amazonaws.com
+        
+        # Build with tag
         docker buildx build \
           --platform linux/amd64 \
-          --push \
-          -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
+          -t indexer-app \
           .
+
+        # Optional: Check .env file content
+        docker run --rm indexer-app cat .env
+
+        # Tag and push
+        docker tag indexer-app:latest 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
+        docker push 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
+        
         echo "image=058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest" >> $GITHUB_OUTPUT
 
     - name: Download task definition
@@ -77,3 +86,5 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+        force-new-deployment: true
+        desired-count: 1  # Specify the desired number of tasks

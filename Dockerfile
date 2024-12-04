@@ -6,6 +6,13 @@ WORKDIR /app
 COPY package*.json ./
 
 COPY .env .
+COPY .env .env
+ARG SUPABASE_URL
+ARG SUPABASE_ANON_KEY
+
+# Set environment variables
+ENV SUPABASE_URL=$SUPABASE_URL
+ENV SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
 # Install dependencies
 RUN npm install
 

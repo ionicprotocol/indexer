@@ -48,23 +48,16 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Build a docker container and push it to ECR
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264122535.dkr.ecr.us-east-1.amazonaws.com
         
-        # Build with tag
+        # Build with tag and build args
         docker buildx build \
           --platform linux/amd64 \
-          -t indexer-app \
+          --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+          --build-arg SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+          --push \
+          -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
           .
-
-        # Optional: Check .env file content
-        docker run --rm indexer-app cat .env
-
-        # Tag and push
-        docker tag indexer-app:latest 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
-        docker push 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest
-        
-        echo "image=058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest" >> $GITHUB_OUTPUT
 
     - name: Download task definition
       run: |

@@ -58,9 +58,6 @@ jobs:
           --push \
           -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
           .
-        
-        # Set the image URI as output
-        echo "::set-output name=image::058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest"
 
     - name: Download task definition
       run: |
@@ -83,4 +80,20 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
         force-new-deployment: true
-        desired-count: 1  # Specify the desired number of tasks
+        desired-count: 1
+        network-configuration: |
+          {
+            "awsvpcConfiguration": {
+              "subnets": ["subnet-0cd439d262800846e", "subnet-0f8cf38a64d5dbcb5", "subnet-030a4f6086b8945e8", "subnet-0c8fb2a556e29ca39", "subnet-06ea05d9487a80b1d", "subnet-09bde9f5ac4ae4112"],  # Replace with your private subnets
+              "securityGroups": ["sg-01abfa630f6281705"],  # Replace with your security group
+              "assignPublicIp": "ENABLED"
+            }
+          }
+        load-balancers: |
+          [
+            {
+              "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:058264122535:targetgroup/indexerapi/ecd5acc40de51460",
+              "containerName": "indexer",
+              "containerPort": 3000 
+            }
+          ]

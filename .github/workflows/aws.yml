@@ -48,9 +48,10 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
+        # Login to ECR
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264122535.dkr.ecr.us-east-1.amazonaws.com
         
-        # Build with tag and build args
+        # Build and push
         docker buildx build \
           --platform linux/amd64 \
           --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
@@ -58,6 +59,9 @@ jobs:
           --push \
           -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
           .
+        
+        # Set the image output using the new GitHub Actions syntax
+        echo "image=058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest" >> $GITHUB_OUTPUT
 
     - name: Download task definition
       run: |

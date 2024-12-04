@@ -58,6 +58,9 @@ jobs:
           --push \
           -t 058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest \
           .
+        
+        # Set the image URI as output
+        echo "::set-output name=image::058264122535.dkr.ecr.us-east-1.amazonaws.com/ponder/indexer:latest"
 
     - name: Download task definition
       run: |
